@@ -1,15 +1,21 @@
-import AbstractStatefulCollectionView from "../../framework/ui/view/implementation/AbstractStatefulCollectionView";
-import {CollectionViewDOMConfig, KeyType} from "../../framework/ui/ConfigurationTypes";
+import {
+    AbstractStatefulCollectionView,
+    CollectionViewDOMConfig,
+    CollectionViewListener,
+    FIELD_CreatedBy,
+    KeyType,
+    ListViewRenderer,
+    StateManager,
+    View
+} from 'ui-framework-jps';
+
+
 import {DRAGGABLE, STATE_NAMES, VIEW_NAME} from "../AppTypes";
-import {ListViewRenderer} from "../../framework/ui/view/renderer/ListViewRenderer";
 import Controller from "../Controller";
-import {isSameMongo} from "../../framework/util/EqualityFunctions";
-import {CollectionViewListener} from "../../framework/ui/view/interface/CollectionViewListener";
-import {View} from "../../framework/ui/view/interface/View";
-import {FIELD_CreatedBy} from "../../framework/model/BasicObjectDefinitionFactory";
 
 import debug from 'debug';
-import {StateManager} from "../../framework/state/StateManager";
+import {isSameMongo} from "../EqualityFunctions";
+
 
 const logger = debug('exercise-types-view');
 

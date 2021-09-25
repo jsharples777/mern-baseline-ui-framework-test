@@ -1,3 +1,5 @@
+import {SidebarLocation, SidebarPrefs} from "ui-framework-jps";
+
 export enum Decorator {
     Incomplete,
     Complete,
@@ -63,6 +65,37 @@ export const BUTTON = {
 
 export const INPUT = {
     workoutName: 'workoutName'
+}
+
+export const CurrentWorkoutSidebarPrefs: SidebarPrefs = {
+    id: 'currentWorkoutSidebar',
+    expandedSize: '50%',
+    location: SidebarLocation.right
+}
+
+export const CurrentWorkoutContainers = {
+    list: 'exercises',
+    detail: 'workoutDetail'
+}
+
+export const ExerciseTypesSidebarPrefs: SidebarPrefs = {
+    id: 'exerciseTypesSidebar',
+    expandedSize: '50%',
+    location: SidebarLocation.left
+}
+
+export const ExerciseTypesSidebarContainers = {
+    container: 'exerciseTypesContainer',
+}
+
+export const  WorkoutSummarySidebarPrefs: SidebarPrefs = {
+    id: 'workoutSummarySidebar',
+    expandedSize: '100%',
+    location: SidebarLocation.bottom
+}
+
+export const  WorkoutSummarySidebarContainers = {
+    container: 'workoutSummary',
 }
 
 

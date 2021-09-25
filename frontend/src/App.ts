@@ -1,26 +1,35 @@
 //localStorage.debug = 'linked-controller api-ts exercise-types-view app controller-ts controller-ts-detail api-ts socket-ts user-search user-search-detail list-view-renderer';
 //localStorage.debug = 'collection-view-ts collection-view-ts-detail form-detail-view-renderer linked-controller linked-controller-detail exercise-types-view app validation-manager-rule-failure validation-manager';
 //localStorage.debug = 'validation-manager validation-manager-rule-failure abstract-form-detail-validation';
-import {ContextualInformationHelper} from "./framework/ui/context/ContextualInformationHelper";
+
+import {
+    ChatLogsView,
+    ChatRoomsSidebar,
+    ContextualInformationHelper,
+    SecurityManager,
+    SidebarViewContainer,
+    SidebarLocation,
+    UnreadMessageCountListener,
+    UserSearchSidebar
+} from 'ui-framework-jps';
+
+
 import debug from 'debug';
 import Controller from './app/Controller';
-import UserSearchView from "./framework/ui/chat/UserSearchView";
-import ChatLogsView from "./framework/ui/chat/ChatLogsView";
-import {API_Config, NAVIGATION, STATE_NAMES} from "./app/AppTypes";
-import {UnreadMessageCountListener} from "./framework/socket/UnreadMessageCountListener";
-import UserSearchSidebar from "./framework/ui/chat/UserSearchSidebar";
-import ChatRoomsSidebar from "./framework/ui/chat/ChatRoomsSidebar";
-import ExerciseTypesSidebar from "./app/sidebar/ExerciseTypesSidebar";
-import ChatLogDetailView from "./framework/ui/chat/ChatLogDetailView";
-import FavouriteUserView from "./framework/ui/chat/FavouriteUserView";
-import BlockedUserView from "./framework/ui/chat/BlockedUserView";
+
+import {
+    API_Config, CurrentWorkoutSidebarPrefs, ExerciseTypesSidebarPrefs,
+    NAVIGATION,
+    STATE_NAMES,
+    WorkoutSummarySidebarContainers,
+    WorkoutSummarySidebarPrefs
+} from "./app/AppTypes";
 import {ExerciseTypesCompositeView} from "./app/view/ExerciseTypesCompositeView";
-import WorkoutSummarySidebar from "./app/sidebar/WorkoutSummarySidebar";
 import {WorkoutSummaryView} from "./app/view/WorkoutSummaryView";
-import CurrentWorkoutSidebar from "./app/sidebar/CurrentWorkoutSidebar";
 import {CurrentWorkoutCompositeView} from "./app/view/CurrentWorkoutCompositeView";
 import {WorkoutsViewUsingContext} from "./app/view/WorkoutsViewUsingContext";
-import {SecurityManager} from "./framework/security/SecurityManager";
+
+
 
 localStorage.debug = 'state-manager-graphql api-ts';
 localStorage.plugin = 'chat';
@@ -83,17 +92,17 @@ export default class App implements UnreadMessageCountListener {
         this.setupChatViews();
         this.setupNavigationItemHandling();
 
-        this.exerciseTypesSidebar = new ExerciseTypesSidebar();
+        this.exerciseTypesSidebar = new SidebarViewContainer(ExerciseTypesSidebarPrefs);
         new ExerciseTypesCompositeView(this.exerciseTypesSidebar).onDocumentLoaded();
 
         //new WorkoutsView().onDocumentLoaded(); // carousel view
         new WorkoutsViewUsingContext().onDocumentLoaded();
 
-        this.workoutSummarySidebar = new WorkoutSummarySidebar();
-        this.workoutSummarySidebar.addView(new WorkoutSummaryView(), {containerId: WorkoutSummarySidebar.SidebarContainers.container});
+        this.workoutSummarySidebar = new SidebarViewContainer(WorkoutSummarySidebarPrefs);
+        this.workoutSummarySidebar.addView(new WorkoutSummaryView(), {containerId: WorkoutSummarySidebarContainers.container});
         this.workoutSummarySidebar.onDocumentLoaded();
 
-        this.currentWorkoutSidebar = new CurrentWorkoutSidebar();
+        this.currentWorkoutSidebar = new SidebarViewContainer(CurrentWorkoutSidebarPrefs);
         this.currentWorkoutView = new CurrentWorkoutCompositeView(this.currentWorkoutSidebar);
         this.currentWorkoutView.onDocumentLoaded();
 
@@ -101,9 +110,12 @@ export default class App implements UnreadMessageCountListener {
         SecurityManager.getInstance().onDocumentLoaded(NAVIGATION.logout);
         Controller.getInstance().onDocumentLoaded();
 
-        const text:string = 'Fluffy';
+        const text: string = 'Fluffy';
         const cipher = SecurityManager.getInstance().encryptString(text);
         const decipher = SecurityManager.getInstance().decryptString(cipher);
+        console.log(text);
+        console.log(cipher);
+        console.log(decipher);
 
     }
 
@@ -220,25 +232,13 @@ export default class App implements UnreadMessageCountListener {
 
     private setupUserSearchViews() {
         // add the subviews for the user search
-        this.userSearchSidebar = new UserSearchSidebar();
-        const recentSearches = new UserSearchView(Controller.getInstance().getStateManager());
-        this.userSearchSidebar.addView(recentSearches, {containerId: UserSearchSidebar.SidebarContainers.recentSearches});
-        const favouriteUsers = new FavouriteUserView(Controller.getInstance().getStateManager());
-        this.userSearchSidebar.addView(favouriteUsers, {containerId: UserSearchSidebar.SidebarContainers.favourites});
-        const blockedUsers = new BlockedUserView(Controller.getInstance().getStateManager());
-        this.userSearchSidebar.addView(blockedUsers, {containerId: UserSearchSidebar.SidebarContainers.blocked});
+        this.userSearchSidebar = UserSearchSidebar.getInstance(Controller.getInstance().getStateManager());
         this.userSearchSidebar.onDocumentLoaded();
     }
 
     private setupChatViews() {
         // add the views to the chat side bar
-        this.chatSidebar = new ChatRoomsSidebar();
-        this.chatView = new ChatLogsView();
-        this.chatSidebar.addView(this.chatView, {containerId: ChatRoomsSidebar.SidebarContainers.chatLogs});
-
-        const chatLogView = new ChatLogDetailView(Controller.getInstance().getStateManager());
-        this.chatSidebar.addView(chatLogView, {containerId: ChatRoomsSidebar.SidebarContainers.chatLog});
-        this.chatView.addEventListener(chatLogView);
+        this.chatSidebar = ChatRoomsSidebar.getInstance(Controller.getInstance().getStateManager());
         this.chatSidebar.onDocumentLoaded();
     }
 }

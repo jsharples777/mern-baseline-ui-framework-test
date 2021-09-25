@@ -1,17 +1,21 @@
-import AbstractStatefulCollectionView from "../../framework/ui/view/implementation/AbstractStatefulCollectionView";
-import {CollectionViewDOMConfig, KeyType} from "../../framework/ui/ConfigurationTypes";
+import {
+    AbstractStatefulCollectionView,
+    CollectionViewDOMConfig,
+    CollectionViewEventHandlerDelegateUsingContext,
+    CollectionViewListener,
+    CollectionViewListenerForwarder,
+    ContextualInformationHelper,
+    KeyType,
+    ListViewRendererUsingContext,
+    StateManager,
+    View
+} from 'ui-framework-jps';
+
 import {DRAGGABLE, STATE_NAMES, VIEW_NAME} from "../AppTypes";
 import Controller from "../Controller";
-import {isSameMongo} from "../../framework/util/EqualityFunctions";
-import {CollectionViewListener} from "../../framework/ui/view/interface/CollectionViewListener";
-import {View} from "../../framework/ui/view/interface/View";
-
 import debug from 'debug';
-import {StateManager} from "../../framework/state/StateManager";
-import {CollectionViewEventHandlerDelegateUsingContext} from "../../framework/ui/view/delegate/CollectionViewEventHandlerDelegateUsingContext";
-import {CollectionViewListenerForwarder} from "../../framework/ui/view/delegate/CollectionViewListenerForwarder";
-import {ContextualInformationHelper} from "../../framework/ui/context/ContextualInformationHelper";
-import {ListViewRendererUsingContext} from "../../framework/ui/view/renderer/ListViewRendererUsingContext";
+import {isSameMongo} from "../EqualityFunctions";
+
 
 const logger = debug('current-workout-exercises-view');
 

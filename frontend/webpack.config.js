@@ -10,24 +10,24 @@ module.exports = {
     path: path.resolve(__dirname, '../backend/public/js'),
   },
   resolve: {
-    extensions: ['.tsx','.ts','.jsx','.js'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        loader: 'babel-loader',
       },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        loader: 'babel-loader',
       },
       {
         test: /\.ts?$/,
+        loader: 'babel-loader',
         exclude: /node_modules/,
-        use: 'babel-loader',
       },
     ],
   },

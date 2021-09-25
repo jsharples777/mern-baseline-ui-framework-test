@@ -1,12 +1,17 @@
-import AbstractStatefulCollectionView from "../../framework/ui/view/implementation/AbstractStatefulCollectionView";
-import {CollectionViewDOMConfig, KeyType} from "../../framework/ui/ConfigurationTypes";
+import {
+    AbstractStatefulCollectionView,
+    CollectionViewDOMConfig,
+    CollectionViewListener,
+    KeyType,
+    View
+} from 'ui-framework-jps';
+
 import {STATE_NAMES, VIEW_NAME} from "../AppTypes";
 import Controller from "../Controller";
-import {isSameMongo} from "../../framework/util/EqualityFunctions";
-import {CollectionViewListener} from "../../framework/ui/view/interface/CollectionViewListener";
-import {View} from "../../framework/ui/view/interface/View";
+
 
 import {WorkoutSummaryRenderer} from "../renderer/WorkoutSummaryRenderer";
+import {isSameMongo} from "../EqualityFunctions";
 
 
 export class WorkoutSummaryView extends AbstractStatefulCollectionView implements CollectionViewListener {

@@ -1,4 +1,8 @@
 # Fitness Tracker     [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+        include: [
+          path.join(__dirname, '../src'), // + any other paths that need to be transpiled
+          /\/node_modules\/ui-framework-jps/,
+        ],
 
 # Table of Contents
 - [Project Description](#project-description)

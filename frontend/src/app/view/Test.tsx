@@ -1,7 +1,8 @@
 /** @jsx jsxCreateElement */
 /*** @jsxFrag jsxCreateFragment */
 
-import {jsxCreateElement,jsxCreateFragment} from "../../framework/jsx/JSXParser";
+// @ts-ignore
+import {jsxCreateElement,jsxCreateFragment} from "ui-framework-jps";
 
 export function TestJSX() {
     let test = false;

@@ -1,24 +1,30 @@
-import AbstractStatefulCollectionView from "../../framework/ui/view/implementation/AbstractStatefulCollectionView";
-import {CollectionViewDOMConfig, KeyType, Modifier} from "../../framework/ui/ConfigurationTypes";
+import {
+    AbstractStatefulCollectionView,
+    BootstrapTableConfigHelper,
+    CollectionViewDOMConfig,
+    CollectionViewEventHandlerDelegateUsingContext,
+    CollectionViewListener,
+    CollectionViewListenerForwarder,
+    ContextDefinition,
+    ContextualInformationHelper,
+    DataObjectDefinition,
+    DisplayOrder,
+    FIELD_CreatedBy,
+    KeyType,
+    Modifier,
+    ObjectDefinitionRegistry,
+    StateManager,
+    TableUIConfig,
+    TabularViewRendererUsingContext,
+    View
+} from 'ui-framework-jps';
+
+
 import {DRAGGABLE, STATE_NAMES, VIEW_NAME} from "../AppTypes";
 import Controller from "../Controller";
-import {isSameMongo} from "../../framework/util/EqualityFunctions";
-import {CollectionViewListener} from "../../framework/ui/view/interface/CollectionViewListener";
-import {View} from "../../framework/ui/view/interface/View";
-import {FIELD_CreatedBy} from "../../framework/model/BasicObjectDefinitionFactory";
-
 import debug from 'debug';
-import {StateManager} from "../../framework/state/StateManager";
-import {ContextDefinition, ContextualInformationHelper} from "../../framework/ui/context/ContextualInformationHelper";
-import {CollectionViewEventHandlerDelegateUsingContext} from "../../framework/ui/view/delegate/CollectionViewEventHandlerDelegateUsingContext";
-import {CollectionViewListenerForwarder} from "../../framework/ui/view/delegate/CollectionViewListenerForwarder";
-import {TabularViewRendererUsingContext} from "../../framework/ui/view/renderer/TabularViewRendererUsingContext";
+import {isSameMongo} from "../EqualityFunctions";
 
-import {DataObjectDefinition} from "../../framework/model/DataObjectTypeDefs";
-import {ObjectDefinitionRegistry} from "../../framework/model/ObjectDefinitionRegistry";
-import {TableUIConfig} from "../../framework/ui/view/renderer/TableUITypeDefs";
-import {BootstrapTableConfigHelper} from "../../framework/ui/helper/BootstrapTableConfigHelper";
-import {DisplayOrder} from "../../framework/ui/form/FormUITypeDefs";
 
 const logger = debug('exercise-types-view');
 
@@ -92,17 +98,17 @@ export class ExerciseTabularViewUsingContext extends AbstractStatefulCollectionV
     constructor(stateManager: StateManager) {
         super(ExerciseTabularViewUsingContext.DOMConfig, stateManager, STATE_NAMES.exerciseTypes);
 
-        let exerciseTypeDef:DataObjectDefinition|null = ObjectDefinitionRegistry.getInstance().findDefinition(STATE_NAMES.exerciseTypes);
+        let exerciseTypeDef: DataObjectDefinition | null = ObjectDefinitionRegistry.getInstance().findDefinition(STATE_NAMES.exerciseTypes);
         if (exerciseTypeDef) {
-            let displayOrders:DisplayOrder[] = [];
-            displayOrders.push({ fieldId:'name',displayOrder:1});
-            displayOrders.push({ fieldId:'type',displayOrder:2});
-            displayOrders.push({ fieldId:'duration',displayOrder:3});
-            displayOrders.push({ fieldId:'sets',displayOrder:4});
-            displayOrders.push({ fieldId:'reps',displayOrder:5});
-            displayOrders.push({ fieldId:'weight',displayOrder:6});
-            displayOrders.push({ fieldId:'distance',displayOrder:7});
-            let tableUIConfig:TableUIConfig = BootstrapTableConfigHelper.getInstance().generateTableRowConfig(exerciseTypeDef,displayOrders,1,true,true);
+            let displayOrders: DisplayOrder[] = [];
+            displayOrders.push({fieldId: 'name', displayOrder: 1});
+            displayOrders.push({fieldId: 'type', displayOrder: 2});
+            displayOrders.push({fieldId: 'duration', displayOrder: 3});
+            displayOrders.push({fieldId: 'sets', displayOrder: 4});
+            displayOrders.push({fieldId: 'reps', displayOrder: 5});
+            displayOrders.push({fieldId: 'weight', displayOrder: 6});
+            displayOrders.push({fieldId: 'distance', displayOrder: 7});
+            let tableUIConfig: TableUIConfig = BootstrapTableConfigHelper.getInstance().generateTableRowConfig(exerciseTypeDef, displayOrders, 1, true, true);
             // change the text alignment for the exercise type, duration, sets, reps, and weight
             tableUIConfig.headerColumns[1].element.elementClasses += ' text-center';
             tableUIConfig.columns[1].elementClasses += ' text-center';
@@ -118,7 +124,7 @@ export class ExerciseTabularViewUsingContext extends AbstractStatefulCollectionV
             tableUIConfig.headerColumns[6].element.innerHTML += ' (km)';
             tableUIConfig.columns[6].elementClasses += ' text-right';
 
-            this.renderer = new TabularViewRendererUsingContext(this, this,tableUIConfig);
+            this.renderer = new TabularViewRendererUsingContext(this, this, tableUIConfig);
             this.eventHandlerDelegate = new CollectionViewEventHandlerDelegateUsingContext(this, <CollectionViewListenerForwarder>this.eventForwarder);
             this.getIdForItemInNamedCollection = this.getIdForItemInNamedCollection.bind(this);
             this.getItemId = this.getItemId.bind(this);

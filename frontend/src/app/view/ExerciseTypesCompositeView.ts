@@ -1,19 +1,22 @@
-import SidebarViewContainer from "../../framework/ui/container/SidebarViewContainer";
-import ExerciseTypesSidebar from "../sidebar/ExerciseTypesSidebar";
-import {DataObjectDefinition} from "../../framework/model/DataObjectTypeDefs";
-import {ObjectDefinitionRegistry} from "../../framework/model/ObjectDefinitionRegistry";
-import {BUTTON, STATE_NAMES, VIEW_CONTAINER, VIEW_NAME} from "../AppTypes";
-import {FormDetailViewRenderer} from "../../framework/ui/view/renderer/FormDetailViewRenderer";
+import {
+    BasicObjectDefinitionFactory,
+    DataObjectDefinition,
+    DetailView,
+    DetailViewImplementation,
+    Form,
+    FormDetailViewRenderer,
+    LinkedCollectionDetailController,
+    ObjectDefinitionRegistry,
+    SidebarViewContainer
+} from 'ui-framework-jps';
+
+import {BUTTON, ExerciseTypesSidebarContainers, STATE_NAMES, VIEW_CONTAINER, VIEW_NAME} from "../AppTypes";
+
 import {CreatedByPermissionChecker} from "../CreatedByPermissionChecker";
-import {DetailView} from "../../framework/ui/view/interface/DetailView";
-import {DetailViewImplementation} from "../../framework/ui/view/implementation/DetailViewImplementation";
-import {LinkedCollectionDetailController} from "../../framework/ui/helper/LinkedCollectionDetailController";
-import {BasicObjectDefinitionFactory} from "../../framework/model/BasicObjectDefinitionFactory";
-import {Form} from "../../framework/ui/form/Form";
+
 import Controller from "../Controller";
 import debug from "debug";
 import {ValidationHelper} from "../helper/ValidationHelper";
-import {ExerciseTypesViewUsingContext} from "./ExerciseTypesViewUsingContext";
 import {ExerciseTabularViewUsingContext} from "./ExerciseTabularViewUsingContext";
 
 const logger = debug('exercise-types-composite-view');
@@ -27,7 +30,7 @@ export class ExerciseTypesCompositeView {
 
     onDocumentLoaded() {
         const exerciseTypes = new ExerciseTabularViewUsingContext(Controller.getInstance().getStateManager());
-        this.sideBar.addView(exerciseTypes, {containerId: ExerciseTypesSidebar.SidebarContainers.container});
+        this.sideBar.addView(exerciseTypes, {containerId: ExerciseTypesSidebarContainers.container});
 
         const exerciseTypeDefinition: DataObjectDefinition | null = ObjectDefinitionRegistry.getInstance().findDefinition(STATE_NAMES.exerciseTypes);
 

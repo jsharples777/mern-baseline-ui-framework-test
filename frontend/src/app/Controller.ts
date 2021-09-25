@@ -1,26 +1,32 @@
+import {
+    AggregateStateManager,
+    AsyncStateManagerWrapper,
+    BasicObjectDefinitionFactory,
+    ChatManager,
+    DataObjectController,
+    DataObjectDefinition,
+    DataObjectListener,
+    DownloadManager,
+    FieldDefinition,
+    FieldType,
+    GraphQLApiStateManager,
+    KeyType,
+    MemoryBufferStateManager,
+    NotificationController,
+    ObjectDefinitionRegistry,
+    RESTApiStateManager,
+    SimpleValueDataSource,
+    SocketManager,
+    StateChangeListener,
+    StateManager
+} from 'ui-framework-jps';
+
+
 import debug from 'debug';
-import MemoryBufferStateManager from "../framework/state/MemoryBufferStateManager";
-import StateChangeListener from "../framework/state/StateChangeListener";
-import {StateManager} from "../framework/state/StateManager";
-import SocketManager from "../framework/socket/SocketManager";
-import AsyncStateManagerWrapper from "../framework/state/AsyncStateManagerWrapper";
-import {AggregateStateManager} from "../framework/state/AggregateStateManager";
 import SocketListenerDelegate from "./SocketListenerDelegate";
-import {ChatManager} from "../framework/socket/ChatManager";
-import {NotificationController} from "../framework/socket/NotificationController";
 import {API_Config, STATE_NAMES} from "./AppTypes";
-import {RESTApiStateManager} from "../framework/state/RESTApiStateManager";
-import {DataObjectDefinition, FieldDefinition, FieldType} from "../framework/model/DataObjectTypeDefs";
-import {ObjectDefinitionRegistry} from "../framework/model/ObjectDefinitionRegistry";
-import {BasicObjectDefinitionFactory} from "../framework/model/BasicObjectDefinitionFactory";
-import {SimpleValueDataSource} from "../framework/ui/helper/SimpleValueDataSource";
-import {KeyType} from "../framework/ui/ConfigurationTypes";
-import {DataObjectListener} from "../framework/model/DataObjectListener";
-import {DataObjectController} from "../framework/model/DataObjectController";
-import {isSameMongo} from "../framework/util/EqualityFunctions";
 import {v4} from "uuid";
-import DownloadManager from "../framework/network/DownloadManager";
-import {GraphQLApiStateManager} from "../framework/state/GraphQLApiStateManager";
+import {isSameMongo} from "./EqualityFunctions";
 
 
 const cLogger = debug('controller-ts');
@@ -98,12 +104,12 @@ export default class Controller implements StateChangeListener, DataObjectListen
         let aggregateSM = new AggregateStateManager(isSameMongo);
         let memorySM = new MemoryBufferStateManager(isSameMongo);
 
-        let asyncREST = new AsyncStateManagerWrapper(aggregateSM, restSM,isSameMongo);
-        let asyncQL = new AsyncStateManagerWrapper(aggregateSM,qlSM,isSameMongo);
+        let asyncREST = new AsyncStateManagerWrapper(aggregateSM, restSM, isSameMongo);
+        let asyncQL = new AsyncStateManagerWrapper(aggregateSM, qlSM, isSameMongo);
 
         aggregateSM.addStateManager(memorySM, [], false);
-        aggregateSM.addStateManager(asyncREST, [STATE_NAMES.recentUserSearches,STATE_NAMES.exerciseTypes], false);
-        aggregateSM.addStateManager(asyncQL, [STATE_NAMES.recentUserSearches,STATE_NAMES.users,STATE_NAMES.workouts], false);
+        aggregateSM.addStateManager(asyncREST, [STATE_NAMES.recentUserSearches, STATE_NAMES.exerciseTypes], false);
+        aggregateSM.addStateManager(asyncQL, [STATE_NAMES.recentUserSearches, STATE_NAMES.users, STATE_NAMES.workouts], false);
         this.stateManager = aggregateSM;
 
         // state listener
